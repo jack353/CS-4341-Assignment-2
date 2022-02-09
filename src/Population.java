@@ -17,7 +17,7 @@ public class Population {
             individuals[i].go(nums);
             if (maxFit <= individuals[i].fitness) {
                 maxFit = individuals[i].fitness;
-                i = i;
+                ind = i;
             }
         }
         return individuals[ind];
