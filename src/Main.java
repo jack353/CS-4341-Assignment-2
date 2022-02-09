@@ -7,6 +7,8 @@ public class Main {
     //setup to take proper command line arguments
     // puzzle#, filename, #seconds
 
+    public static final float[] input = new float[40];
+
     public static void main(String[] args) {
 
         int puzzle = Integer.parseInt(args[0]);
@@ -21,7 +23,6 @@ public class Main {
             System.out.println("Please input puzzle number 1 or 2.");
         }
 
-        float[] input = new float[40];
         int counter = 0;
         int time = Integer.parseInt(args[2]);
 

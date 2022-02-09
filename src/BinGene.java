@@ -7,4 +7,8 @@ public class BinGene {
     public void add(float n){
         bin.add(n);
     }
+
+    public float get(int n){
+        return bin.get(n);
+    }
 }

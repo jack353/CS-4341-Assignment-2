@@ -1,9 +1,11 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class BinIndividual {
 
-    int fitness = 0;
+    float fitness = 0;
+    double cumProb = 0;
 
     ArrayList<BinGene> bins = new ArrayList<>();
 
@@ -23,15 +25,38 @@ public class BinIndividual {
             int random = randomGenerator.nextInt(size);
             if (!numbers.contains(random)) {
                 numbers.add(random);
-                bins.get(Math.floor(numbers.size()/10).add(.get(random));
+                bins.get((int)Math.floor(numbers.size()/10)).add(Main.input[random]);
             }
         }
         return numbers;
     }
 
-    public void findFitness(){
-
+    private void findFitness(){
+        fitness = calcBin1() + calcBin2() + calcBin3();
     }
 
+    private float calcBin1(){
+        float total = 1;
+        for (int i = 0; i < 10; i++){
+            total = total * bins.get(0).get(i);
+        }
+        return total;
+    }
+
+    private float calcBin2(){
+        float total = 0;
+        for (int i = 0; i < 10; i++){
+            total = total + bins.get(1).get(i);
+        }
+        return total;
+    }
+
+    private float calcBin3(){
+        return(Collections.max(bins.get(2).bin) - Collections.min(bins.get(2).bin));
+    }
+
+    public void setCumProb(float n){
+        cumProb = n;
+    }
 
 }
