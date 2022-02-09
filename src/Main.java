@@ -1,7 +1,5 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -11,9 +9,23 @@ public class Main {
 
     public static void main(String[] args) {
 
-        ArrayList<Float> input = new ArrayList<Float>();
+        int puzzle = Integer.parseInt(args[0]);
 
-        File myObj = new File("src/input.txt");
+        if(args.length != 3){
+            System.out.println("An error occurred.");
+            System.out.println("Invalid number of input.");
+            System.out.println("Please input a puzzle #, filename, and # of seconds.");
+        } else if(puzzle != 1 && puzzle != 2) {
+            System.out.println("An error occurred.");
+            System.out.println("Invalid puzzle input.");
+            System.out.println("Please input puzzle number 1 or 2.");
+        }
+
+        float[] input = new float[40];
+        int counter = 0;
+        int time = Integer.parseInt(args[2]);
+
+        File myObj = new File("C:\\Users\\Alex\\Desktop\\CS-4341-Assignment-2\\src\\" + args[1]);
         Scanner myReader = null;
 
         try {
@@ -24,10 +36,14 @@ public class Main {
 
         while (myReader.hasNextLine()) {
             String data = myReader.nextLine();
-            input.add(Float.parseFloat(data));
+            //System.out.println(data+"\n");
+            float num = Float.parseFloat(data);
+            //1System.out.println(num+"\n");
+            input[counter] = num;
         }
         myReader.close();
 
-        //setup to pass input to ga
+        ga ga = new ga();
+        ga.solve(puzzle, input, time);
     }
 }
