@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -9,10 +11,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-        float[] input = new float[40];
-        int counter = 0;
+        ArrayList<Float> input = new ArrayList<Float>();
 
-        File myObj = new File("C:\\Users\\Alex\\Desktop\\CS-4341-Assignment-2\\src\\input.txt");
+        File myObj = new File("src/input.txt");
         Scanner myReader = null;
 
         try {
@@ -23,10 +24,7 @@ public class Main {
 
         while (myReader.hasNextLine()) {
             String data = myReader.nextLine();
-            //System.out.println(data+"\n");
-            float num = Float.parseFloat(data);
-            //System.out.println(num+"\n");
-            input[counter] = num;
+            input.add(Float.parseFloat(data));
         }
         myReader.close();
 
