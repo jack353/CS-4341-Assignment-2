@@ -1,6 +1,6 @@
 public class ga {
 
-    public static void main(String[] args){
+    public static void solve(int puzzle, float[] input, int time){
 
     }
 }

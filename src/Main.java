@@ -23,8 +23,9 @@ public class Main {
 
         float[] input = new float[40];
         int counter = 0;
+        int time = Integer.parseInt(args[2]);
 
-        File myObj = new File("C:\\Users\\Alex\\Desktop\\CS-4341-Assignment-2\\src\\input.txt");
+        File myObj = new File("C:\\Users\\Alex\\Desktop\\CS-4341-Assignment-2\\src\\" + args[1]);
         Scanner myReader = null;
 
         try {
@@ -37,11 +38,12 @@ public class Main {
             String data = myReader.nextLine();
             //System.out.println(data+"\n");
             float num = Float.parseFloat(data);
-            //System.out.println(num+"\n");
+            //1System.out.println(num+"\n");
             input[counter] = num;
         }
         myReader.close();
 
-        //setup to pass input to ga
+        ga ga = new ga();
+        ga.solve(puzzle, input, time);
     }
 }
