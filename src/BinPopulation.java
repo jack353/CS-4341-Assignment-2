@@ -2,19 +2,32 @@ import java.util.ArrayList;
 
 public class BinPopulation {
     int popSize;
+    int size;
     ArrayList<BinIndividual> individuals = new ArrayList<>();
+    ArrayList<BinIndividual> children = new ArrayList<>();
 
-    public BinPopulation(int size){
-        generateIndividuals(size);
+
+
+    //move all this to main method
+    public BinPopulation(int s){
+        size = s;
+        generateIndividuals();
+        findFitnesses();
         sortIndividuals();
         cull();
         getProbabilites();
+        haveKids();
     }
 
-    private void generateIndividuals(int size) {
+    private void generateIndividuals() {
         for (int i = 0; i < individuals.size(); i++) {
             individuals.add(new BinIndividual());
         }
+    }
+
+    void findFitnesses(){
+        for (BinIndividual i : individuals)
+            i.findFitness();
     }
 
     private void cull(){
@@ -22,18 +35,6 @@ public class BinPopulation {
         for (int i = 0; i < num; i++){
             individuals.remove(0);
         }
-    }
-
-    public BinIndividual findFittest() {
-        float maxFit = Integer.MIN_VALUE;
-        BinIndividual max = individuals.get(0);
-        for (BinIndividual i : individuals){
-            if (maxFit <= i.fitness){
-                maxFit = i.fitness;
-                max = i;
-            }
-        }
-        return max;
     }
 
     private void sortIndividuals() {
@@ -71,4 +72,45 @@ public class BinPopulation {
         }
         return sum;
     }
+
+    void haveKids(){
+        addFittestTwo();
+
+        while(children.size() < size){
+            addTwoChildren();
+        }
+        individuals = children;
+        children = new ArrayList<>();
+    }
+
+    void addFittestTwo() {
+        children.add(individuals.get(individuals.size()-1));
+        children.add(individuals.get(individuals.size()-2));
+    }
+
+    void addTwoChildren(){
+        BinIndividual p1 = getParent();
+        BinIndividual p2 = getParent();
+
+        BinIndividual c1 = new BinIndividual();
+        BinIndividual c2 = new BinIndividual();
+
+        //c1.bins.get(0).setBin(p1.bins.get(0).subList(0,5).addAll(p2.bins.get(0).subList(5,10)));
+    }
+
+    BinIndividual getParent(){
+        double p = Math.random();
+
+        for (BinIndividual i : individuals){
+            if (i.cumProb > p)
+                return(i);
+        }
+        return(null);
+    }
+
+    /*ArrayList<Float> getNewBin(BinIndividual p1, BinIndividual p2, int bin){
+
+    }*/
+
+
 }

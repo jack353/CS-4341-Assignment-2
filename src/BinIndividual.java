@@ -15,10 +15,14 @@ public class BinIndividual {
         bins.add(new BinGene());
         bins.add(new BinGene());
         fillBins(40);
+    }
+
+    public BinIndividual(ArrayList<BinGene> g){
+        bins = g;
         findFitness();
     }
 
-    private ArrayList<Integer> fillBins(int size){
+    ArrayList<Integer> fillBins(int size){
         ArrayList<Integer> numbers = new ArrayList<Integer>();
         Random randomGenerator = new Random();
         while (numbers.size() < size) {
@@ -31,11 +35,11 @@ public class BinIndividual {
         return numbers;
     }
 
-    private void findFitness(){
+    void findFitness(){
         fitness = calcBin1() + calcBin2() + calcBin3();
     }
 
-    private float calcBin1(){
+    float calcBin1(){
         float total = 1;
         for (int i = 0; i < 10; i++){
             total = total * bins.get(0).get(i);
@@ -43,7 +47,7 @@ public class BinIndividual {
         return total;
     }
 
-    private float calcBin2(){
+    float calcBin2(){
         float total = 0;
         for (int i = 0; i < 10; i++){
             total = total + bins.get(1).get(i);
@@ -51,12 +55,13 @@ public class BinIndividual {
         return total;
     }
 
-    private float calcBin3(){
+    float calcBin3(){
         return(Collections.max(bins.get(2).bin) - Collections.min(bins.get(2).bin));
     }
 
-    public void setCumProb(float n){
+    void setCumProb(float n){
         cumProb = n;
     }
+
 
 }
