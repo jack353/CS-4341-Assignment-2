@@ -15,4 +15,8 @@ public class BinGene {
     public void setBin(ArrayList<Float> b){
         bin = b;
     }
+
+    public void setValue(int i, float n){
+        bin.set(i, n);
+    }
 }

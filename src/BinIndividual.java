@@ -63,5 +63,8 @@ public class BinIndividual {
         cumProb = n;
     }
 
+    void setFitness(float f){
+        fitness = f;
+    }
 
 }

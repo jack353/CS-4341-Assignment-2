@@ -1,7 +1,7 @@
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class BinPopulation {
-    int popSize;
     int size;
     ArrayList<BinIndividual> individuals = new ArrayList<>();
     ArrayList<BinIndividual> children = new ArrayList<>();
@@ -19,25 +19,25 @@ public class BinPopulation {
         haveKids();
     }
 
-    private void generateIndividuals() {
+    public void generateIndividuals() {
         for (int i = 0; i < individuals.size(); i++) {
             individuals.add(new BinIndividual());
         }
     }
 
-    void findFitnesses(){
+    public void findFitnesses(){
         for (BinIndividual i : individuals)
             i.findFitness();
     }
 
-    private void cull(){
+    public  void cull(){
         int num = (int)Math.floor(individuals.size()/4);
         for (int i = 0; i < num; i++){
             individuals.remove(0);
         }
     }
 
-    private void sortIndividuals() {
+    public void sortIndividuals() {
         // Outer loop
         for (int i = 0; i < individuals.size(); i++) {
             // Inner nested loop pointing 1 index ahead
@@ -56,9 +56,10 @@ public class BinPopulation {
         }
     }
 
-    private void getProbabilites(){
-        float sum = getFitSum();
+    public void getProbabilites(){
         float cumulative = 0;
+        scaleFitness();
+        float sum = getFitSum();
         for (int i = 0; i < individuals.size(); i++){
             cumulative += (individuals.get(i).fitness/sum);
             individuals.get(i).setCumProb(cumulative);
@@ -71,6 +72,18 @@ public class BinPopulation {
             sum += individuals.get(i).fitness;
         }
         return sum;
+    }
+
+    void scaleFitness(){
+        if (individuals.get(0).fitness < 0)
+            addSmallest();
+    }
+
+    void addSmallest(){
+        float add = Math.abs(individuals.get(0).fitness);
+        for (BinIndividual i : individuals){
+            i.setFitness(i.fitness + add);
+        }
     }
 
     void haveKids(){
@@ -95,7 +108,15 @@ public class BinPopulation {
         BinIndividual c1 = new BinIndividual();
         BinIndividual c2 = new BinIndividual();
 
-        //c1.bins.get(0).setBin(p1.bins.get(0).subList(0,5).addAll(p2.bins.get(0).subList(5,10)));
+        children.add(c1);
+        children.add(c2);
+
+        addBin(p1, p2, 0);
+        addBin(p1, p2, 1);
+        addBin(p1, p2, 2);
+        addBin(p1, p2, 3);
+
+        mutate(children.get(children.size()-2), children.get(children.size()-1));
     }
 
     BinIndividual getParent(){
@@ -108,9 +129,62 @@ public class BinPopulation {
         return(null);
     }
 
-    /*ArrayList<Float> getNewBin(BinIndividual p1, BinIndividual p2, int bin){
+    void addBin(BinIndividual p1, BinIndividual p2, int bin){
+        ArrayList<Float> c1B = new ArrayList<>();
+        ArrayList<Float> c2B = new ArrayList<>();
 
-    }*/
+        ArrayList<Float> p1B = p1.bins.get(bin).bin;
+        ArrayList<Float> p2B = p2.bins.get(bin).bin;
 
+        c1B.addAll(p1B.subList(0, p1B.size()/2));
+        c1B.addAll(p2B.subList(p2B.size()/2, p2B.size()));
 
+        children.get(children.size()-2).bins.get(bin).bin = c1B;
+
+        c2B.addAll(p2B.subList(0, p2B.size()/2));
+        c2B.addAll(p1B.subList(p1B.size()/2, p1B.size()));
+
+        children.get(children.size()-1).bins.get(bin).bin = c2B;
+    }
+
+    void mutate(BinIndividual c1, BinIndividual c2){
+        ArrayList<Float> c1Dupes = getDuplicate(c1);
+        ArrayList<Float> c2Dupes = getDuplicate(c2);
+
+        ArrayList<Float> c1Found = new ArrayList<>();
+        ArrayList<Float> c2Found = new ArrayList<>();
+
+        for (int bin = 0; bin < c1.bins.size(); bin++){
+            for (int i = 0; i < c1.bins.get(bin).bin.size(); i++){
+                if (c1Found.contains(c1.bins.get(bin).bin.get(i)))
+                    children.get(children.size()-2).bins.get(bin).setValue(i,c2Dupes.remove(0));
+                else
+                    c1Found.add(c1.bins.get(bin).bin.get(i));
+            }
+        }
+
+        for (int bin = 0; bin < c2.bins.size(); bin++){
+            for (int i = 0; i < c2.bins.get(bin).bin.size(); i++){
+                if (c2Found.contains(c2.bins.get(bin).bin.get(i)))
+                    children.get(children.size()-1).bins.get(bin).setValue(i,c1Dupes.remove(0));
+                else
+                    c1Found.add(c2.bins.get(bin).bin.get(i));
+            }
+        }
+
+    }
+
+    ArrayList<Float> getDuplicate(BinIndividual c){
+        ArrayList<Float> found = new ArrayList<>();
+        ArrayList<Float> dups = new ArrayList<>();
+        for (BinGene bg : c.bins){
+            for (float n : bg.bin){
+                if (found.contains(n))
+                    dups.add(n);
+                else
+                    found.add(n);
+            }
+        }
+        return(dups);
+    }
 }
