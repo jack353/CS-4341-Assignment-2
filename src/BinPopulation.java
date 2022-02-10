@@ -11,23 +11,17 @@ public class BinPopulation {
     //move all this to main method
     public BinPopulation(int s){
         size = s;
-        generateIndividuals();
-        findFitnesses();
-        sortIndividuals();
-        cull();
-        getProbabilites();
-        haveKids();
     }
 
     public void generateIndividuals() {
-        for (int i = 0; i < individuals.size(); i++) {
+        for (int i = 0; i < size; i++) {
             individuals.add(new BinIndividual());
         }
     }
 
     public void findFitnesses(){
-        for (BinIndividual i : individuals)
-            i.findFitness();
+        for (int i = 0; i < individuals.size(); i++)
+            individuals.get(i).findFitness();
     }
 
     public  void cull(){
@@ -68,8 +62,8 @@ public class BinPopulation {
 
     private float getFitSum(){
         float sum = 0;
-        for (int i = 0; i < individuals.size(); i++){
-            sum += individuals.get(i).fitness;
+        for (BinIndividual i : individuals){
+            sum += i.fitness;
         }
         return sum;
     }
@@ -123,8 +117,9 @@ public class BinPopulation {
         double p = Math.random();
 
         for (BinIndividual i : individuals){
-            if (i.cumProb > p)
-                return(i);
+            if (i.cumProb > p) {
+                return (i);
+            }
         }
         return(null);
     }
@@ -168,7 +163,7 @@ public class BinPopulation {
                 if (c2Found.contains(c2.bins.get(bin).bin.get(i)))
                     children.get(children.size()-1).bins.get(bin).setValue(i,c1Dupes.remove(0));
                 else
-                    c1Found.add(c2.bins.get(bin).bin.get(i));
+                    c2Found.add(c2.bins.get(bin).bin.get(i));
             }
         }
 
@@ -186,5 +181,10 @@ public class BinPopulation {
             }
         }
         return(dups);
+    }
+
+    void printBest(){
+        sortIndividuals();
+        System.out.println(individuals.get(individuals.size()-1).fitness);
     }
 }

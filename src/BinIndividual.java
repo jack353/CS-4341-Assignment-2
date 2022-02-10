@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class BinIndividual {
 
-    float fitness = 0;
+    public float fitness = 0;
     double cumProb = 0;
 
     ArrayList<BinGene> bins = new ArrayList<>();
@@ -22,17 +22,16 @@ public class BinIndividual {
         findFitness();
     }
 
-    ArrayList<Integer> fillBins(int size){
-        ArrayList<Integer> numbers = new ArrayList<Integer>();
+    void fillBins(int size){
+        ArrayList<Integer> numbers = new ArrayList<>();
         Random randomGenerator = new Random();
         while (numbers.size() < size) {
             int random = randomGenerator.nextInt(size);
             if (!numbers.contains(random)) {
                 numbers.add(random);
-                bins.get((int)Math.floor(numbers.size()/10)).add(Main.input[random]);
+                bins.get((int) Math.floor((numbers.size() - 1) / 10)).add(ga.input[random]);
             }
         }
-        return numbers;
     }
 
     void findFitness(){
@@ -56,7 +55,8 @@ public class BinIndividual {
     }
 
     float calcBin3(){
-        return(Collections.max(bins.get(2).bin) - Collections.min(bins.get(2).bin));
+        float total = Collections.max(bins.get(2).bin) - Collections.min(bins.get(2).bin);
+        return(total);
     }
 
     void setCumProb(float n){

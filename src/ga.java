@@ -26,7 +26,7 @@ public class ga {
         int counter = 0;
         int time = Integer.parseInt(args[2]);
 
-        File myObj = new File("C:\\Users\\Alex\\Desktop\\CS-4341-Assignment-2\\src\\" + args[1]);
+        File myObj = new File(args[1]);
         Scanner myReader = null;
 
         try {
@@ -41,6 +41,7 @@ public class ga {
             float num = Float.parseFloat(data);
             //1System.out.println(num+"\n");
             input[counter] = num;
+            counter ++;
         }
         myReader.close();
 
@@ -59,7 +60,7 @@ public class ga {
                 p.getProbabilites();
                 p.haveKids();
             }
-
+            p.printBest();
         }
 
         long endTime = System.nanoTime();
