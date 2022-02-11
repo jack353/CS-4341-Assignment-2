@@ -62,6 +62,10 @@ public class ga {
             }
             p.printBest();
         }
+        else{
+            TowerPopulation p = new TowerPopulation(20);
+            p.generateIndividuals();
+        }
 
         long endTime = System.nanoTime();
         long elapsedTime = (endTime - startTime) / 1000000000;

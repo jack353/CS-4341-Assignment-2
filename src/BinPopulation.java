@@ -6,9 +6,6 @@ public class BinPopulation {
     ArrayList<BinIndividual> individuals = new ArrayList<>();
     ArrayList<BinIndividual> children = new ArrayList<>();
 
-
-
-    //move all this to main method
     public BinPopulation(int s){
         size = s;
     }
