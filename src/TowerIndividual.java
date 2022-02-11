@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class TowerIndividual {
 
     public float fitness = 0;
+    int totalCost = 0;
     double cumProb = 0;
 
 
