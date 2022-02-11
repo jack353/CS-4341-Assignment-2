@@ -185,6 +185,10 @@ public class BinPopulation {
 
     void printBest(){
         sortIndividuals();
-        System.out.println(individuals.get(individuals.size()-1).fitness);
+        System.out.println("Best Score: " + individuals.get(individuals.size()-1).fitness + "\n");
+        System.out.println("Bin 1: " + individuals.get(individuals.size()-1).bins.get(0).bin.toString());
+        System.out.println("Bin 2: " + individuals.get(individuals.size()-1).bins.get(1).bin.toString());
+        System.out.println("Bin 3: " + individuals.get(individuals.size()-1).bins.get(2).bin.toString());
+        System.out.println("Bin 4: " + individuals.get(individuals.size()-1).bins.get(3).bin.toString() + "\n");
     }
 }
