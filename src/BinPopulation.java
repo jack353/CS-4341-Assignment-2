@@ -96,6 +96,8 @@ public class BinPopulation {
         BinIndividual p1 = getParent();
         BinIndividual p2 = getParent();
 
+
+
         BinIndividual c1 = new BinIndividual();
         BinIndividual c2 = new BinIndividual();
 
