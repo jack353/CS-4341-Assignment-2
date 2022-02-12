@@ -14,6 +14,16 @@ public class TowerPopulation {
         for (int i = 0; i < size; i++) {
             individuals.add(new TowerIndividual());
         }
+        checkZero();
+    }
+
+    void checkZero(){
+        findFitnesses();
+        sortIndividuals();
+        if (individuals.get(individuals.size()-1).fitness == 0){
+            individuals = new ArrayList<>();
+            generateIndividuals();
+        }
     }
 
     public void findFitnesses(){
@@ -124,7 +134,7 @@ public class TowerPopulation {
     }
 
     void mutate(TowerIndividual c1, TowerIndividual c2){
-        if (c1.tower.size() > towerInput.size() || c2.tower.size() > towerInput.size())
+        if (c1.tower.size() > ga.towerInput.size() || c2.tower.size() > ga.towerInput.size())
             mutateDel(c1, c2);
         else
             mutateSwap(c1, c2);
@@ -150,36 +160,44 @@ public class TowerPopulation {
     }
 
     void mutateSwap(TowerIndividual c1, TowerIndividual c2){
-        ArrayList<TowerPiece> c1Dupes = getDuplicate(c1);
-        ArrayList<TowerPiece> c2Dupes = getDuplicate(c2);
-
         ArrayList<TowerPiece> c1Found = new ArrayList<>();
         ArrayList<TowerPiece> c2Found = new ArrayList<>();
 
+        Random rg = new Random();
+
         for (int i = 0; i < c1.tower.size(); i++){
-            if (c1Found.contains(c1.tower.get(i)))
-                children.get(children.size()-2).tower.set(i,c2Dupes.remove(i));
+            if (c1Found.contains(c1.tower.get(i))) {
+                int rand = rg.nextInt(ga.towerInput.size());
+                while (c1.tower.contains(ga.towerInput.get(rand)))
+                    rand = rg.nextInt(c1.tower.size());
+                children.get(children.size() - 2).tower.set(i, ga.towerInput.get(rand));
+                c1Found.add(ga.towerInput.get(rand));
+            }
             else
                 c1Found.add(c1.tower.get(i));
         }
 
         for (int i = 0; i < c2.tower.size(); i++){
-            if (c2Found.contains(c2.tower.get(i)))
-                children.get(children.size()-1).tower.set(i,c1Dupes.remove(i));
+            if (c2Found.contains(c2.tower.get(i))) {
+                int rand = rg.nextInt(ga.towerInput.size());
+                while (c2.tower.contains(ga.towerInput.get(rand)))
+                    rand = rg.nextInt(c2.tower.size());
+                children.get(children.size() - 1).tower.set(i, ga.towerInput.get(rand));
+                c2Found.add(ga.towerInput.get(rand));
+            }
             else
-                c1Found.add(c2.tower.get(i));
+                c2Found.add(c2.tower.get(i));
         }
     }
 
-    ArrayList<TowerPiece> getDuplicate(TowerIndividual p){
-        ArrayList<TowerPiece> found = new ArrayList<>();
-        ArrayList<TowerPiece> dups = new ArrayList<>();
-        for (TowerPiece pc : p.tower){
-                if (found.contains(pc))
-                    dups.add(pc);
-                else
-                    found.add(pc);
-        }
-        return(dups);
+    void printBest(){
+        sortIndividuals();
+        System.out.println("Best Score: " + individuals.get(individuals.size()-1).fitness + "\n");
+        printTower(individuals.get(individuals.size()-1));
+    }
+
+    void printTower(TowerIndividual i){
+        for (TowerPiece p : i.tower)
+            System.out.println(p.toString() + "\n");
     }
 }

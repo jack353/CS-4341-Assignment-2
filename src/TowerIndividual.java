@@ -15,12 +15,12 @@ public class TowerIndividual {
 
     void randomFill(){
         Random rg = new Random();
-        int height = rg.nextInt(towerInput.size()) + 1;
+        int height = rg.nextInt(ga.towerInput.size()) + 1;
         ArrayList<Integer> used = new ArrayList<>();
         while(height != 0){
-            int random = rg.nextInt(towerInput.size());
+            int random = rg.nextInt(ga.towerInput.size());
             if (!used.contains(random)) {
-                tower.add(towerInput.get(random));
+                tower.add(ga.towerInput.get(random));
                 height--;
             }
         }
@@ -33,6 +33,7 @@ public class TowerIndividual {
     }
 
     void getTotalCost(){
+        totalCost = 0;
         for (TowerPiece p : tower)
             totalCost += p.cost;
     }
@@ -44,6 +45,8 @@ public class TowerIndividual {
             else
                 checkWAndS();
         }
+        else
+            fitness = 0;
     }
 
     void checkWalls(){
@@ -51,6 +54,7 @@ public class TowerIndividual {
         for (int i = 1; i < tower.size()-1; i++){
             if (!tower.get(i).type.equals("Wall")) {
                 invalid = true;
+                fitness = 0;
                 break;
             }
         }
@@ -61,26 +65,24 @@ public class TowerIndividual {
     void checkWAndS(){
         int prevW = tower.get(0).width;
         boolean valid = true;
-        for (int i = 1; i < tower.size(); i++){
+        for (int i = 0; i < tower.size(); i++){
             if (tower.get(i).width > prevW || tower.get(i).strength < (tower.size() - i-1)){
                 valid = false;
+                fitness = 0;
                 break;
             }
+            prevW = tower.get(i).width;
         }
         if (valid)
             getScore();
     }
 
     void getScore(){
-        fitness = 10 + (tower.size()^2) -  totalCost;
+        fitness = (10 + (tower.size() * tower.size()) -  totalCost);
     }
 
     void setCumProb(float n){
         cumProb = n;
-    }
-
-    void setFitness(float f){
-        fitness = f;
     }
 
 }
