@@ -3,6 +3,8 @@ import java.util.Hashtable;
 
 public class BinPopulation {
     int size;
+    int generation;
+
     ArrayList<BinIndividual> individuals = new ArrayList<>();
     ArrayList<BinIndividual> children = new ArrayList<>();
 
@@ -12,8 +14,9 @@ public class BinPopulation {
 
     public void generateIndividuals() {
         for (int i = 0; i < size; i++) {
-            individuals.add(new BinIndividual());
+            individuals.add(new BinIndividual(generation));
         }
+        generation = 1;
     }
 
     public void findFitnesses(){
@@ -78,6 +81,7 @@ public class BinPopulation {
     }
 
     void haveKids(){
+        generation+=1;
         addFittestTwo();
 
         while(children.size() < size){
@@ -98,8 +102,8 @@ public class BinPopulation {
 
 
 
-        BinIndividual c1 = new BinIndividual();
-        BinIndividual c2 = new BinIndividual();
+        BinIndividual c1 = new BinIndividual(generation);
+        BinIndividual c2 = new BinIndividual(generation);
 
         children.add(c1);
         children.add(c2);
@@ -120,7 +124,7 @@ public class BinPopulation {
                 return (i);
             }
         }
-        return(null);
+        return(getParent());
     }
 
     void addBin(BinIndividual p1, BinIndividual p2, int bin){
@@ -189,5 +193,7 @@ public class BinPopulation {
         System.out.println("Bin 2: " + individuals.get(individuals.size()-1).bins.get(1).bin.toString());
         System.out.println("Bin 3: " + individuals.get(individuals.size()-1).bins.get(2).bin.toString());
         System.out.println("Bin 4: " + individuals.get(individuals.size()-1).bins.get(3).bin.toString() + "\n");
+        System.out.println("Ran for " + generation + " generations");
+        System.out.println("Best individual's generation: " + individuals.get(individuals.size()-1).gen);
     }
 }

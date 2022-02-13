@@ -3,6 +3,7 @@ import java.util.Random;
 
 public class TowerPopulation {
     int size;
+    int generation;
     ArrayList<TowerIndividual> individuals = new ArrayList<>();
     ArrayList<TowerIndividual> children = new ArrayList<>();
 
@@ -12,8 +13,9 @@ public class TowerPopulation {
 
     public void generateIndividuals() {
         for (int i = 0; i < size; i++) {
-            individuals.add(new TowerIndividual());
+            individuals.add(new TowerIndividual(generation));
         }
+        generation = 1;
         checkZero();
     }
 
@@ -75,6 +77,7 @@ public class TowerPopulation {
     }
 
     void haveKids(){
+        generation+=1;
         addFittestTwo();
 
         while(children.size() < size){
@@ -93,8 +96,8 @@ public class TowerPopulation {
         TowerIndividual p1 = getParent();
         TowerIndividual p2 = getParent();
 
-        TowerIndividual c1 = new TowerIndividual();
-        TowerIndividual c2 = new TowerIndividual();
+        TowerIndividual c1 = new TowerIndividual(generation);
+        TowerIndividual c2 = new TowerIndividual(generation);
 
         children.add(c1);
         children.add(c2);
@@ -112,7 +115,7 @@ public class TowerPopulation {
                 return (i);
             }
         }
-        return(null);
+        return(getParent());
     }
 
     void crossOver(TowerIndividual p1, TowerIndividual p2){
@@ -194,6 +197,8 @@ public class TowerPopulation {
         sortIndividuals();
         System.out.println("Best Score: " + individuals.get(individuals.size()-1).fitness + "\n");
         printTower(individuals.get(individuals.size()-1));
+        System.out.println("Ran for " + generation + " generations");
+        System.out.println("Best individual's generation: " + individuals.get(individuals.size()-1).gen);
     }
 
     void printTower(TowerIndividual i){

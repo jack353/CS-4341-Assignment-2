@@ -5,11 +5,13 @@ public class TowerIndividual {
 
     public float fitness = 0;
     int totalCost = 0;
+    public int gen;
     double cumProb = 0;
 
     ArrayList<TowerPiece> tower = new ArrayList<>();
 
-    public TowerIndividual(){
+    public TowerIndividual(int g){
+        gen = g;
         randomFill();
     }
 

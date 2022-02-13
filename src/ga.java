@@ -110,9 +110,5 @@ public class ga {
             p.haveKids();
         }
         p.printBest();
-
-        long endTime = System.nanoTime();
-        long elapsedTime = (endTime - startTime) / 1000000000;
-        System.out.println(elapsedTime);
     }
 }

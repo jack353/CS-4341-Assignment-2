@@ -5,11 +5,13 @@ import java.util.Random;
 public class BinIndividual {
 
     public float fitness = 0;
+    public int gen;
     double cumProb = 0;
 
     ArrayList<BinGene> bins = new ArrayList<>();
 
-    public BinIndividual(){
+    public BinIndividual(int g){
+        gen = g;
         bins.add(new BinGene());
         bins.add(new BinGene());
         bins.add(new BinGene());
